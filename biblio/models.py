@@ -27,7 +27,8 @@ class Llengua(models.Model):
         return self.nom
 
 class Cataleg(models.Model):
-    titol = models.CharField(max_length=100)
+    titol = models.CharField(max_length=200)
+    titol_original = models.CharField(max_length=200, blank=True, null=True)
     autor = models.CharField(max_length=200, blank=True, null=True)
     CDU = models.CharField(max_length=40, blank=True, null=True)
     signatura = models.CharField(max_length=40, blank=True, null=True)
@@ -51,6 +52,9 @@ class Llibre(Cataleg):
     numero = models.IntegerField(null=True,blank=True)
     volums = models.IntegerField(null=True,blank=True)
     pagines = models.IntegerField(blank=True,null=True)
+    info_url = models.CharField(max_length=200,blank=True,null=True)
+    preview_url = models.CharField(max_length=200,blank=True,null=True)
+    thumbnail_url = models.CharField(max_length=200,blank=True,null=True)
 
 class Revista(Cataleg):
     class Meta:

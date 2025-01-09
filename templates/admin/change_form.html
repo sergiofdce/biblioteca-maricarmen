@@ -39,16 +39,45 @@
           url: "http://openlibrary.org/api/books?bibkeys=ISBN:"+isbn+"&jscmd=details&format=json",
           dataType: "json",   // necessitem això pq ens retorni un objecte JSON
         }).done(function (msg) {
+            var llibre = msg["ISBN:"+isbn];
+            if( !llibre ) {
+                console.log("No s'ha trobat l'ISBN");
+                alert("No s'ha trobat l'ISBN");
+                return;
+            }
             console.log(msg);
-            var titol = msg["ISBN:"+isbn].details.title;
-            $('#id_titol').val(titol);
-          /*for(let item in msg.artists) {
-            console.log(msg.artists[item]);
-            // aquí caldría fer mes coses, of course...
-            // ...
-          };*/
+            if( !llibre.details ) {
+                console.log("No s'ha trobat detalls del llibre");
+                alert("No s'ha trobat detalls del llibre");
+                return;
+            }
+
+            $('#id_ISBN').val(isbn);
+            if(llibre.info_url) $('#id_info_url').val(llibre.info_url);
+            if(llibre.preview_url) $('#id_preview_url').val(llibre.preview_url);
+            if(llibre.thumbnail_url) $('#id_thumbnail_url').val(llibre.thumbnail_url);
+
+            var details = llibre.details;
+            if(details.title) $('#id_titol').val(details.title);
+            if(details.full_title) $('#id_titol').val(details.full_title);
+            if(details.translation_of) $('#id_titol_original').val(details.translation_of);
+            if(details.number_of_pages) $('#id_pagines').val(details.number_of_pages);
+            if(details.publishers) $('#id_editorial').val(details.publishers[0]);
+            if(details.authors) $('#id_autor').val(details.authors[0].name);
+            if(details.publish_date) {
+                let data = new Date(details.publish_date);
+                let data2 = data.getDate()+"/"+(data.getMonth()+1)+"/"+data.getFullYear();
+                $('#id_data_edicio').val(data2);
+            }
+            if(details.description) $('#id_resum').val(details.description.value);
+            /*if(details.languages) {
+                var lang_code = details.languages[0].key;
+
+                $('#id_autor').val(details.authors[0].name);
+            }*/
+
         }).fail(function () {
-            alert("ERROR");
+            alert("Error en carregar la informació de l'ISBN");
         });
     }
     </script>
