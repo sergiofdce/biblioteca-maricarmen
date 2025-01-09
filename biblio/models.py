@@ -1,40 +1,48 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.utils.timezone import now
 from django.contrib.auth.hashers import make_password
 
 
-TIPUS_MATERIAL_CHOICES = [
-    ('llibre', 'Llibre'),
-    ('joc','Joc'),
-    ('revista','Revista'),
-    ('CD', 'CD'),
-    ('DVD', 'DVD'),
-    ('BR', 'Blu-ray'),
-    ('dispositiu', 'Dispositiu'),
-]
+class Categoria(models.Model):
+    class Meta:
+        verbose_name_plural = "Categories"
+    nom = models.CharField(max_length=100)
+    parent = models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True)
+    def __str__(self):
+        return self.nom
 
 class Pais(models.Model):
+    class Meta:
+        verbose_name_plural = "Països"
     nom = models.CharField(max_length=200)
+    def __str__(self):
+        return self.nom
 
 class Llengua(models.Model):
+    class Meta:
+        verbose_name_plural = "Llengües"
     nom = models.CharField(max_length=200)
+    def __str__(self):
+        return self.nom
 
 class Cataleg(models.Model):
-    #tipus = models.CharField(max_length=100, choices=TIPOS_MATERIAL_CHOICES)
     titol = models.CharField(max_length=100)
     autor = models.CharField(max_length=200, blank=True, null=True)
-    CDU = models.CharField(max_length=40)
-    signatura = models.CharField(max_length=40)
+    CDU = models.CharField(max_length=40, blank=True, null=True)
+    signatura = models.CharField(max_length=40, blank=True, null=True)
     data_edicio = models.DateField(null=True,blank=True)
     resum = models.TextField(blank=True,null=True)
     anotacions = models.TextField(blank=True,null=True)
     mides = models.CharField(max_length=100,null=True,blank=True)
+    tags = models.ManyToManyField(Categoria,blank=True)
     def exemplars(self):
     	return 0
+    def __str__(self):
+        return self.titol
 
 class Llibre(Cataleg):
-    ISBN = models.CharField(max_length=13)
+    ISBN = models.CharField(max_length=13, blank=True, null=True)
     editorial = models.CharField(max_length=100, blank=True, null=True)
     colleccio = models.CharField(max_length=100, blank=True, null=True)
     lloc = models.CharField(max_length=100, blank=True, null=True)
@@ -42,18 +50,19 @@ class Llibre(Cataleg):
     llengua = models.ForeignKey(Llengua, on_delete=models.SET_NULL, blank=True, null=True)
     numero = models.IntegerField(null=True,blank=True)
     volums = models.IntegerField(null=True,blank=True)
-    pagines = models.IntegerField()
+    pagines = models.IntegerField(blank=True,null=True)
 
 class Revista(Cataleg):
-    ISSN = models.CharField(max_length=13)
+    class Meta:
+        verbose_name_plural = "Revistes"
+    ISSN = models.CharField(max_length=13, blank=True, null=True)
     editorial = models.CharField(max_length=100, blank=True, null=True)
-    #colleccio = models.CharField(max_length=100, blank=True, null=True)
     lloc = models.CharField(max_length=100, blank=True, null=True)
     pais = models.ForeignKey(Pais, on_delete=models.SET_NULL, blank=True, null=True)
     llengua = models.ForeignKey(Llengua, on_delete=models.SET_NULL, blank=True, null=True)
     numero = models.IntegerField(null=True,blank=True)
     volums = models.IntegerField(null=True,blank=True)
-    pagines = models.IntegerField()
+    pagines = models.IntegerField(blank=True,null=True)
 
 class CD(Cataleg):
     discografica = models.CharField(max_length=100)
@@ -62,19 +71,19 @@ class CD(Cataleg):
 
 class DVD(Cataleg):
     productora = models.CharField(max_length=100)
-    duracio = models.IntegerField()
+    duracio = models.TimeField()
 
 class BR(Cataleg):
     productora = models.CharField(max_length=100)
-    duracio = models.IntegerField()
+    duracio = models.TimeField()
 
 class Dispositiu(Cataleg):
-    modelo = models.CharField(max_length=100, default="")
-    serie = models.CharField(max_length=100, default="")
+    marca = models.CharField(max_length=100)
+    model = models.CharField(max_length=100,null=True,blank=True)
 
 class Exemplar(models.Model):
     cataleg = models.ForeignKey(Cataleg, on_delete=models.CASCADE)
-    identificador = models.CharField(max_length=100)
+    registre = models.CharField(max_length=100,null=True,blank=True)
     exclos_prestec = models.BooleanField(default=True)
     baixa = models.BooleanField(default=False)
 
@@ -85,29 +94,27 @@ class Imatge(models.Model):
 
 # Usuaris
 
-"""class Centre(models.Model):
+class Centre(models.Model):
     nom = models.CharField(max_length=200)
 
 class Cicle(models.Model):
     nom = models.CharField(max_length=200)
 
-class Usuari(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField(default="") 
-    nom = models.CharField(max_length=50, default="") 
-    cognoms = models.CharField(max_length=100, default="") 
-    data_naixement = models.DateField()
-    centre = models.ForeignKey(Centre, on_delete=models.SET_NULL, null=True)
-    cicle = models.ForeignKey(Cicle, on_delete=models.SET_NULL, null=True)
-    imatge = models.ImageField(upload_to='imatges/', null=True, blank=True) 
-    contrasenya_cifrada = models.CharField(max_length=128,default="")  # Longitud suficiente para almacenar la contraseña cifrada
+class Usuari(AbstractUser):
+    centre = models.ForeignKey(Centre,on_delete=models.SET_NULL,null=True,blank=True)
+    cicle = models.ForeignKey(Cicle,on_delete=models.SET_NULL,null=True,blank=True)
+    imatge = models.ImageField(upload_to='usuaris/',null=True,blank=True) 
 
 class Reserva(models.Model):
+    class Meta:
+        verbose_name_plural = "Reserves"
     usuari = models.ForeignKey(Usuari, on_delete=models.CASCADE)
     exemplar = models.ForeignKey(Exemplar, on_delete=models.CASCADE)
     data = models.DateField(auto_now_add=True)
 
 class Prestec(models.Model):
+    class Meta:
+        verbose_name_plural = "Préstecs"
     usuari = models.ForeignKey(Usuari, on_delete=models.CASCADE)
     exemplar = models.ForeignKey(Exemplar, on_delete=models.CASCADE)
     data_prestec = models.DateField(auto_now_add=True)
@@ -115,6 +122,8 @@ class Prestec(models.Model):
     anotacions = models.TextField(blank=True,null=True)
 
 class Peticio(models.Model):
+    class Meta:
+        verbose_name_plural = "Peticions"
     usuari = models.ForeignKey(Usuari, on_delete=models.CASCADE)
     titol = models.CharField(max_length=200)
     descripcio = models.TextField()
@@ -127,7 +136,6 @@ class Log(models.Model):
         ('ERROR', 'Error'),
         ('FATAL', 'Fatal'),
     )
-    
     usuari = models.CharField(max_length=100, null=True, blank=True)
     accio = models.CharField(max_length=100)
     data_accio = models.DateTimeField(auto_now_add=True)
@@ -136,4 +144,4 @@ class Log(models.Model):
     def __str__(self):
         return f"{self.accio} - {self.tipus}"
 
-"""
+
