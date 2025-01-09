@@ -20,8 +20,8 @@ class UsuariAdmin(UserAdmin):
 class ExemplarsInline(admin.TabularInline):
 	model = Exemplar
 	extra = 1
-	readonly_fields = ('id',)
-	fields = ('registre','exclos_prestec','baixa')
+	readonly_fields = ('pk',)
+	fields = ('pk','registre','exclos_prestec','baixa')
 
 class LlibreAdmin(admin.ModelAdmin):
 	filter_horizontal = ('tags',)
