@@ -30,12 +30,26 @@
 
 {% if '/admin/biblio/llibre/' in request.path %}
   <li>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <script type="text/javascript">
     function carrega_info_isbn() {
         var isbn = prompt("Introdueix el ISBN");
-        alert("ISBN="+isbn);
-        // TODO: carregar jQuery
-        //$("h1").hide();
+        $.ajax({
+          method: "GET",
+          url: "http://openlibrary.org/api/books?bibkeys=ISBN:"+isbn+"&jscmd=details&format=json",
+          dataType: "json",   // necessitem això pq ens retorni un objecte JSON
+        }).done(function (msg) {
+            console.log(msg);
+            var titol = msg["ISBN:"+isbn].details.title;
+            $('#id_titol').val(titol);
+          /*for(let item in msg.artists) {
+            console.log(msg.artists[item]);
+            // aquí caldría fer mes coses, of course...
+            // ...
+          };*/
+        }).fail(function () {
+            alert("ERROR");
+        });
     }
     </script>
     <a href="#" onclick="carrega_info_isbn()" class="viewlink">Carrega info ISBN</a>
