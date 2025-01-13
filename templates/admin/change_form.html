@@ -36,7 +36,7 @@
         var isbn = prompt("Introdueix el ISBN");
         $.ajax({
           method: "GET",
-          url: "http://openlibrary.org/api/books?bibkeys=ISBN:"+isbn+"&jscmd=details&format=json",
+          url: "https://openlibrary.org/api/books?bibkeys=ISBN:"+isbn+"&jscmd=details&format=json",
           dataType: "json",   // necessitem això pq ens retorni un objecte JSON
         }).done(function (msg) {
             var llibre = msg["ISBN:"+isbn];

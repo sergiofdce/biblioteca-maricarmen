@@ -24,10 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-svm3_g)6&_0+k@8t)1w+c&eu#x6@nt15dwz2)*k%hbh4teqn@1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["biblio.ieti.site",'localhost']
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+#CSRF_TRUSTED_ORIGINS = ["https://biblio.ieti.site"]
 
 # Application definition
 AUTH_USER_MODEL = 'biblio.Usuari'
