@@ -90,6 +90,8 @@ class Exemplar(models.Model):
     registre = models.CharField(max_length=100,null=True,blank=True)
     exclos_prestec = models.BooleanField(default=True)
     baixa = models.BooleanField(default=False)
+    def __str__(self):
+        return "REG:{} - {}".format(self.registre,self.cataleg.titol)
 
 class Imatge(models.Model):
     cataleg = models.ForeignKey(Cataleg, on_delete=models.CASCADE)
@@ -124,6 +126,8 @@ class Prestec(models.Model):
     data_prestec = models.DateField(auto_now_add=True)
     data_retorn = models.DateField(null=True, blank=True)
     anotacions = models.TextField(blank=True,null=True)
+    def __str__(self):
+        return str(self.exemplar)
 
 class Peticio(models.Model):
     class Meta:
