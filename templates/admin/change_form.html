@@ -168,11 +168,13 @@
                     }
                     // ajax a openlibrary.org
                     carrega_info_isbn_de_open_library(isbn);
-                    $( "#dialog" ).dialog("close");
+                    $('#barcode_detectat').empty();
+                    $('#dialog').dialog("close");
                 },
                 "Cancela": function() {
                     atura_video();
-                    $( "#dialog" ).dialog("close");
+                    $('#barcode_detectat').empty();
+                    $('#dialog').dialog("close");
                 }
             }
         });
