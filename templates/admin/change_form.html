@@ -4,9 +4,17 @@
 {% block extrahead %}{{ block.super }}
 <script src="{% url 'admin:jsi18n' %}"></script>
 {{ media }}
-{% endblock %}
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>{% endblock %}
 
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static "admin/css/forms.css" %}">{% endblock %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "admin/css/forms.css" %}">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+<style type="text/css">
+    
+</style>
+{% endblock %}
 
 {% block coltype %}colM{% endblock %}
 
@@ -30,10 +38,14 @@
 
 {% if '/admin/biblio/llibre/' in request.path %}
   <li>
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    
     <script type="text/javascript">
-    function carrega_info_isbn() {
+    function introduccio_manual_isbn() {
         var isbn = prompt("Introdueix el ISBN");
+        carrega_info_isbn_de_open_library(isbn);
+    }
+
+    function carrega_info_isbn_de_open_library(isbn) {
         $.ajax({
           method: "GET",
           url: "https://openlibrary.org/api/books?bibkeys=ISBN:"+isbn+"&jscmd=details&format=json",
@@ -80,8 +92,96 @@
             alert("Error en carregar la informació de l'ISBN");
         });
     }
+
+    let stream = null;
+
+    async function startBarcodeDetection() {
+        const videoElement = document.getElementById('video');
+        const resultElement = document.getElementById('result');
+        const barcodeElement = document.getElementById('barcode_detectat');
+
+        if (!('BarcodeDetector' in window)) {
+            resultElement.textContent = 'La teva navegadora no suporta la Barcode Detection API.';
+            resultElement.classList.add('error');
+            return;
+        }
+
+        const barcodeDetector = new BarcodeDetector();
+
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            videoElement.srcObject = stream;
+            await videoElement.play(); // Assegura que el vídeo es reprodueix
+
+            async function detectBarcode() {
+                if (videoElement.readyState !== 4) {
+                    console.error('El flux de vídeo no està llest.');
+                    return;
+                }
+
+                try {
+                    const barcodes = await barcodeDetector.detect(videoElement);
+                    if (barcodes.length > 0) {
+                        resultElement.textContent = `Codi detectat: ${barcodes[0].rawValue}`;
+                        barcodeElement.textContent = barcodes[0].rawValue;
+                    } else {
+                        resultElement.textContent = 'Escanejant...';
+                    }
+                } catch (error) {
+                    console.error('Error en la detecció de codis:', error);
+                    resultElement.textContent = 'Error en la detecció de codis.';
+                    resultElement.classList.add('error');
+                }
+
+                requestAnimationFrame(detectBarcode);
+            }
+
+            detectBarcode();
+        } catch (error) {
+            console.error('Error al accedir a la càmera:', error);
+            resultElement.textContent = 'No es pot accedir a la càmera.';
+            resultElement.classList.add('error');
+        }
+    }
+
+    function atura_video() {
+        if (stream) {
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop()); // Atura totes les pistes (àudio i vídeo)
+            $('video')[0].srcObject = null; // Desconnecta el vídeo
+            $('result').html('Captura aturada.');
+            stream = null;
+        }
+    }
+
+    function llegeix_codi_de_barres_amb_camera() {
+        const videoElement = document.getElementById('video');
+        $("#dialog").dialog({
+            modal: true,
+            buttons: {
+                "Cerca el codi ISBN": function() {
+                    atura_video();
+                    var isbn = $("#barcode_detectat").html();
+                    if( !isbn ) {
+                        alert("No s'ha detectat cap codi de barres");
+                        return;
+                    }
+                    // ajax a openlibrary.org
+                    carrega_info_isbn_de_open_library(isbn);
+                    $( "#dialog" ).dialog("close");
+                },
+                "Cancela": function() {
+                    atura_video();
+                    $( "#dialog" ).dialog("close");
+                }
+            }
+        });
+        // barcode lib
+        startBarcodeDetection();
+    }
     </script>
-    <a href="#" onclick="carrega_info_isbn()" class="viewlink">Carrega info ISBN</a>
+    <a href="#" onclick="introduccio_manual_isbn()" class="viewlink">Introdueix manualment l'ISBN</a>
+    <a href="#" onclick="llegeix_codi_de_barres_amb_camera()" class="viewlink">Llegeix codi de barres de ISBN</a>
   </li>
 {% endif %}
 
@@ -137,4 +237,12 @@
 
 </div>
 </form></div>
+
+<div id="dialog" title="Captura de codi de barres per ISBN">
+  <p>Captura el codi de barres</p>
+  <video id="video" style="width:100%" autoplay></video>
+  <div id="result">Escanejant...</div>
+  <div id="barcode_detectat"></div>
+</div>
+
 {% endblock %}
