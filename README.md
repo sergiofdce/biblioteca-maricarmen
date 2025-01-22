@@ -19,7 +19,7 @@ Cloneu el repositori:
 Creem el virtualenv i carreguem les biblioteques:
 
     python3 -m venv env
-    (env) $ source env/bin/activate
+    source env/bin/activate
 
 Creem la base de dades de desenvolupament i afegim un superusuari:
 
