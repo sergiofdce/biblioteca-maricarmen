@@ -26,6 +26,7 @@ Carreguem les biblioteques del sistema (en particular per l'us de MySQL). Pel ca
     sudo apt install libmysqlclient-dev python3-dev python3-mysqldb gcc pkgconf
 
 Carreguem les biblioteques de Python:
+
     (env) $ pip install -r requirements.txt
 
 Creem la base de dades de desenvolupament i afegim un superusuari:
