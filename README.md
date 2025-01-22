@@ -20,6 +20,12 @@ Creem el virtualenv i carreguem les biblioteques:
 
     python3 -m venv env
     source env/bin/activate
+
+Carreguem les biblioteques del sistema (en particular per l'us de MySQL). Pel cas de Debian/Ubuntu:
+
+    sudo apt install libmysqlclient-dev python3-dev python3-mysqldb gcc pkgconf
+
+Carreguem les biblioteques de Python:
     (env) $ pip install -r requirements.txt
 
 Creem la base de dades de desenvolupament i afegim un superusuari:
