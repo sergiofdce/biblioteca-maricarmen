@@ -17,8 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from biblio import views
+from ninja import NinjaAPI
+
+from biblio.api import api
 
 urlpatterns = [
     path('', views.index),
+    path('hello', views.hello ),
     path('admin/', admin.site.urls),
+    path("api/", api.urls),
 ]
