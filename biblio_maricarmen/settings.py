@@ -30,6 +30,7 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*",])
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 #CSRF_TRUSTED_ORIGINS = ["https://biblio.ieti.site"]
 
+
 # Application definition
 AUTH_USER_MODEL = 'biblio.Usuari'
 

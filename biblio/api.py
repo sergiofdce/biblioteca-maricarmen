@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate
 from ninja import NinjaAPI, Schema
 from ninja.security import HttpBasicAuth, HttpBearer
 from .models import *
-from typing import List
+from typing import List, Optional
 import secrets
 
 api = NinjaAPI()
@@ -30,15 +30,16 @@ class AuthBearer(HttpBearer):
             return None
 
 # Endpoint per obtenir un token
-@api.post("/token/", auth=BasicAuth())
+@api.get("/token", auth=BasicAuth())
+@api.get("/token/", auth=BasicAuth())
 def obtenir_token(request):
     return {"token": request.auth}
 
 class LlibreOut(Schema):
     id: int
     titol: str
-    editorial: str
-    #ISBN: str
+    editorial: Optional[str]
+    ISBN: Optional[str]
 
 class LlibreIn(Schema):
     titol: str
@@ -46,11 +47,12 @@ class LlibreIn(Schema):
 
 
 @api.get("/llibres", response=List[LlibreOut], auth=AuthBearer())
+@api.get("/llibres/", response=List[LlibreOut], auth=AuthBearer())
 def get_llibres(request):
     qs = Llibre.objects.all()
     return qs
 
-@api.post("/llibres")
+@api.post("/llibres/")
 def post_llibres(request, payload: LlibreIn):
     llibre = Llibre.objects.create(**payload.dict())
     return {
