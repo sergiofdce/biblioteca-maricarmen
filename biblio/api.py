@@ -46,8 +46,9 @@ class LlibreIn(Schema):
     editorial: str
 
 
-@api.get("/llibres", response=List[LlibreOut], auth=AuthBearer())
-@api.get("/llibres/", response=List[LlibreOut], auth=AuthBearer())
+@api.get("/llibres", response=List[LlibreOut])
+@api.get("/llibres/", response=List[LlibreOut])
+#@api.get("/llibres/", response=List[LlibreOut], auth=AuthBearer())
 def get_llibres(request):
     qs = Llibre.objects.all()
     return qs

@@ -39,3 +39,26 @@ Posem en marxa el servidor de desenvolupament:
 
     (env) $ ./manage.py runserver
 
+Podeu accedir el servidor a http://localhost:8000/admin/
+
+Per carregar la base de dades de test:
+
+    (env) $ ./manage.py loaddata testdb.json
+
+    
+## API
+
+Per accedir l'API dels llibres:
+
+GET /api/token
+paràmetres:
+  * user
+  * password
+
+Exemples:
+    curl "localhost:8000/api/token/" -i -X GET -u admin:admin123
+
+
+GET /api/llibres
+paràmetres: no n'hi ha
+
