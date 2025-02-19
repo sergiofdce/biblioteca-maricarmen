@@ -35,6 +35,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 AUTH_USER_MODEL = 'biblio.Usuari'
 
 INSTALLED_APPS = [
+    "corsheaders",
     'biblio.apps.BiblioConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

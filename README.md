@@ -45,7 +45,7 @@ Per carregar la base de dades de test:
 
     (env) $ ./manage.py loaddata testdb.json
 
-    
+
 ## API
 
 Per accedir l'API dels llibres:
