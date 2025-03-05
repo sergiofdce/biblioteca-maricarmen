@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('biblio', '0001_initial'),
+        ('biblioteca', '0001_initial'),
     ]
 
     operations = [
@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='cataleg',
             name='tags',
-            field=models.ManyToManyField(blank=True, to='biblio.categoria'),
+            field=models.ManyToManyField(blank=True, to='biblioteca.categoria'),
         ),
         migrations.AlterField(
             model_name='llibre',
@@ -77,6 +77,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='usuari',
             name='cicle',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblio.cicle'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblioteca.cicle'),
         ),
     ]

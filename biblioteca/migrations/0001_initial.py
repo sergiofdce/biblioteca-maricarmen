@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
                 ('registre', models.CharField(blank=True, max_length=100, null=True)),
                 ('exclos_prestec', models.BooleanField(default=True)),
                 ('baixa', models.BooleanField(default=False)),
-                ('cataleg', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblio.cataleg')),
+                ('cataleg', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblioteca.cataleg')),
             ],
         ),
         migrations.CreateModel(
@@ -107,46 +107,46 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BR',
             fields=[
-                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblio.cataleg')),
+                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblioteca.cataleg')),
                 ('productora', models.CharField(max_length=100)),
                 ('duracio', models.TimeField()),
             ],
-            bases=('biblio.cataleg',),
+            bases=('biblioteca.cataleg',),
         ),
         migrations.CreateModel(
             name='CD',
             fields=[
-                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblio.cataleg')),
+                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblioteca.cataleg')),
                 ('discografica', models.CharField(max_length=100)),
                 ('estil', models.CharField(max_length=100)),
                 ('duracio', models.TimeField()),
             ],
-            bases=('biblio.cataleg',),
+            bases=('biblioteca.cataleg',),
         ),
         migrations.CreateModel(
             name='Dispositiu',
             fields=[
-                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblio.cataleg')),
+                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblioteca.cataleg')),
                 ('marca', models.CharField(max_length=100)),
                 ('model', models.CharField(blank=True, max_length=100, null=True)),
             ],
-            bases=('biblio.cataleg',),
+            bases=('biblioteca.cataleg',),
         ),
         migrations.CreateModel(
             name='DVD',
             fields=[
-                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblio.cataleg')),
+                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblioteca.cataleg')),
                 ('productora', models.CharField(max_length=100)),
                 ('duracio', models.TimeField()),
             ],
-            bases=('biblio.cataleg',),
+            bases=('biblioteca.cataleg',),
         ),
         migrations.CreateModel(
             name='Reserva',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('data', models.DateField(auto_now_add=True)),
-                ('exemplar', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblio.exemplar')),
+                ('exemplar', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblioteca.exemplar')),
                 ('usuari', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -157,7 +157,7 @@ class Migration(migrations.Migration):
                 ('data_prestec', models.DateField(auto_now_add=True)),
                 ('data_retorn', models.DateField(blank=True, null=True)),
                 ('anotacions', models.TextField(blank=True, null=True)),
-                ('exemplar', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblio.exemplar')),
+                ('exemplar', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblioteca.exemplar')),
                 ('usuari', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -176,7 +176,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('imatge', models.ImageField(upload_to='imatges/')),
-                ('cataleg', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblio.cataleg')),
+                ('cataleg', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='biblioteca.cataleg')),
             ],
         ),
         migrations.CreateModel(
@@ -184,23 +184,23 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nom', models.CharField(max_length=100)),
-                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='biblio.categoria')),
+                ('parent', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='biblioteca.categoria')),
             ],
         ),
         migrations.AddField(
             model_name='cataleg',
             name='tags',
-            field=models.ManyToManyField(to='biblio.categoria'),
+            field=models.ManyToManyField(to='biblioteca.categoria'),
         ),
         migrations.AddField(
             model_name='usuari',
             name='centre',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblio.centre'),
+            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblioteca.centre'),
         ),
         migrations.AddField(
             model_name='usuari',
             name='cicle',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblio.cicle'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblioteca.cicle'),
         ),
         migrations.AddField(
             model_name='usuari',
@@ -215,22 +215,22 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Revista',
             fields=[
-                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblio.cataleg')),
+                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblioteca.cataleg')),
                 ('ISSN', models.CharField(max_length=13)),
                 ('editorial', models.CharField(blank=True, max_length=100, null=True)),
                 ('lloc', models.CharField(blank=True, max_length=100, null=True)),
                 ('numero', models.IntegerField(blank=True, null=True)),
                 ('volums', models.IntegerField(blank=True, null=True)),
                 ('pagines', models.IntegerField()),
-                ('llengua', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblio.llengua')),
-                ('pais', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblio.pais')),
+                ('llengua', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblioteca.llengua')),
+                ('pais', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblioteca.pais')),
             ],
-            bases=('biblio.cataleg',),
+            bases=('biblioteca.cataleg',),
         ),
         migrations.CreateModel(
             name='Llibre',
             fields=[
-                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblio.cataleg')),
+                ('cataleg_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='biblioteca.cataleg')),
                 ('ISBN', models.CharField(max_length=13)),
                 ('editorial', models.CharField(blank=True, max_length=100, null=True)),
                 ('colleccio', models.CharField(blank=True, max_length=100, null=True)),
@@ -238,9 +238,9 @@ class Migration(migrations.Migration):
                 ('numero', models.IntegerField(blank=True, null=True)),
                 ('volums', models.IntegerField(blank=True, null=True)),
                 ('pagines', models.IntegerField()),
-                ('llengua', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblio.llengua')),
-                ('pais', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblio.pais')),
+                ('llengua', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblioteca.llengua')),
+                ('pais', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='biblioteca.pais')),
             ],
-            bases=('biblio.cataleg',),
+            bases=('biblioteca.cataleg',),
         ),
     ]

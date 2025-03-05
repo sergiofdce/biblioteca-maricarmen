@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('biblio', '0003_llibre_info_url_llibre_preview_url_and_more'),
+        ('biblioteca', '0003_llibre_info_url_llibre_preview_url_and_more'),
     ]
 
     operations = [

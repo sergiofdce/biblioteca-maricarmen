@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from biblio import views
+from biblioteca import views
 from ninja import NinjaAPI
 
-from biblio.api import api
+from biblioteca.api import api
 
 urlpatterns = [
     path('', views.index),

@@ -32,11 +32,11 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 # Application definition
-AUTH_USER_MODEL = 'biblio.Usuari'
+AUTH_USER_MODEL = 'biblioteca.Usuari'
 
 INSTALLED_APPS = [
     "corsheaders",
-    'biblio.apps.BiblioConfig',
+    'biblioteca.apps.BibliotecaConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'biblio_maricarmen.urls'
+ROOT_URLCONF = 'biblioteca-maricarmen.urls'
 
 TEMPLATES = [
     {
@@ -74,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'biblio_maricarmen.wsgi.application'
+WSGI_APPLICATION = 'biblioteca-maricarmen.wsgi.application'
 
 
 # Database

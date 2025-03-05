@@ -1,8 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+
 def index(response):
-    return HttpResponse("Biblioteca Mari Carmen coming soon...")
+    return render(response,"index.html")
+
 
 def hello(response):
     return render(response,"hello.html")
+

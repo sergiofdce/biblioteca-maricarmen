@@ -62,3 +62,7 @@ Exemples:
 GET /api/llibres
 paràmetres: no n'hi ha
 
+
+## Frontend React
+
+El frontend es realitzarà amb React. De moment hi ha un exemple bàsic d'accés via API. Els HTML han d'anar a la carpeta /templates i els assets a la carpeta /static .
