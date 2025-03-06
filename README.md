@@ -46,9 +46,22 @@ Per carregar la base de dades de test:
     (env) $ ./manage.py loaddata testdb.json
 
 
+## Frontend React
+
+Si accedim al frontend http://localhost:8000/ mostrarà un missatge de benvinguda i prou. Si volem activar el frontend realitzat en React caldrà carregar el submòdul a /react i desplegar-ho dins el projecte Django:
+
+    $ git submodule init
+    $ git submodule update
+    $ ./deploy-react.sh
+
+Ara ja es podrà accedir a la pàgina principal http://localhost:8000/ i visualitzar el frontend complert:
+
+    (env) $ ./manage.py runserver
+
+
 ## API
 
-Per accedir l'API dels llibres:
+Per accedir l'API dels llibres cal aconseguir un token vàlid:
 
 GET /api/token
 paràmetres:
@@ -62,7 +75,3 @@ Exemples:
 GET /api/llibres
 paràmetres: no n'hi ha
 
-
-## Frontend React
-
-El frontend es realitzarà amb React. De moment hi ha un exemple bàsic d'accés via API. Els HTML han d'anar a la carpeta /templates i els assets a la carpeta /static .
