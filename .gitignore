@@ -8,3 +8,8 @@ db.sqlite3
 .coverage
 __pycache__
 usuaris/
+
+# react files no han de pujar (està com a submodule)
+# els carregarem amb script de desplegament
+static
+biblioteca/templates/index.html

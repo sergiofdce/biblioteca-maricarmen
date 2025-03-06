@@ -23,7 +23,6 @@ from biblioteca.api import api
 
 urlpatterns = [
     path('', views.index),
-    path('hello', views.hello ),
     path('admin/', admin.site.urls),
     path("api/", api.urls),
 ]
